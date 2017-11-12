@@ -1,0 +1,5 @@
+varun('a','X').
+varun('c','f').
+deepak(X)-varun(X,Z).
+deepak(X,X):-varun(Y,C),varun(Y,W).
+?:-varun(X,'a').
