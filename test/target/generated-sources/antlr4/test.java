@@ -35,12 +35,14 @@ import org.antlr.v4.runtime.*;
     		parser.removeErrorListeners();
     		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
     		
-    		ParseTree tree = parser.datalogProgram(); // begin parsing at rule 'r'
+    		parser.datalogProgram(); // begin parsing at rule 'r'
     		
     		test.readInputFile();
     		
     		for(String delete : factsAndRules)
     			System.out.println(delete);
+    		boolean b=false;
+    		while(b){}
     	}
     	
     	public static void readInputFile()
@@ -65,10 +67,10 @@ import org.antlr.v4.runtime.*;
 					if(list.contains(i));
 					else{
 						if(line.contains(":")){
-							re.read(line);
+						//	re.read(line);
 						}
 						else{
-							fe.read(line);
+							//fe.read(line);
 						}
 						}
 				}

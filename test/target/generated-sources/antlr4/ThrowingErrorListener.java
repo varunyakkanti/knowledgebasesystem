@@ -18,18 +18,21 @@ public static ArrayList<Integer> lineNumbers = new ArrayList<>();
    public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
       throws ParseCancellationException 
    {
+	  	   if(charPositionInLine==0&&(msg.contains("missing '.' at")||msg.contains("expecting '.'"))){
+		   System.out.println("line " +(line-1 )+ ":" + charPositionInLine + " " + msg);
+		   lineNumbers.add(line-1);
+	   }
+	   else{
 	   try 
 	   {
-	  
-		   lineNumbers.add(line);
-		  
 		   System.out.println("line " + line + ":" + charPositionInLine + " " + msg);
-		
+		   lineNumbers.add(line);
 	   } catch (Exception e1) {
 		   // TODO Auto-generated catch block
 		   e1.printStackTrace();
 	   } 
      }
+   }
    
    	public static ArrayList<Integer>  getLineNumbers(){
 	   return lineNumbers;

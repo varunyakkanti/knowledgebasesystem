@@ -4,22 +4,22 @@ grammar Datalog;
 /********************************************************
  * Productions
  ********************************************************/
-datalogProgram:	factList ruleList;
+datalogProgram:	  ruleList factList;
 
 
-idList:	COMMA ID idList | lambda;
-
-			
-fact:	PREDICATE_NAME LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD;
-
-
-factList:	fact factList | lambda;
-
-	
 aRule:	headPredicate COLON_DASH predicate predicateList PERIOD;
 
 
 ruleList:	aRule ruleList | lambda	;
+
+
+idList:	COMMA ID idList | lambda;
+
+
+fact:	PREDICATE_NAME LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD;
+
+
+factList:	fact factList | lambda;
 
 	
 headPredicate:	PREDICATE_NAME LEFT_PAREN ID idList RIGHT_PAREN;
@@ -62,8 +62,7 @@ lambda	:	;
 COMMA	:	','
 	;
 
-PERIOD	:	'.'
-	;
+PERIOD	:	'.';
 
 Q_MARK	:	'?'
 	;
@@ -71,8 +70,10 @@ Q_MARK	:	'?'
 LEFT_PAREN	: '('
 		;
 
-RIGHT_PAREN	: ')'
-		;
+RIGHT_PAREN	: ')';
+
+
+
 
 COLON		: ':'
 		;
@@ -107,19 +108,19 @@ RULES		: 'Rules'
 /*QUERIES		: 'Queries'
 		;*/
     
-PREDICATE_NAME  :	('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
+PREDICATE_NAME  :	('a'..'z')('a'..'z'|'A'..'Z'|'_')*
     ;
 
-ID  :	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*
+ID  :	('A'..'Z') |('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*
     ;
 
 STRING
-    :  '\'' ( ESC_SEQ | ~('\\'|'\''|[^)]) )* '\''
+    :   ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
 COMMENT
-    :   ('#' ~('\n'|'\r')* '\r'? '\n'
-    |   '#|' .*? '|#') -> skip
+    :   ('%' ~('\n'|'\r')* '\r'? '\n'
+    |   '%|' .*? '|#') -> skip
     ;
 
 WS  :   ( ' '
