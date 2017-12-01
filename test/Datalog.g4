@@ -16,22 +16,20 @@ ruleList:	aRule ruleList | lambda	;
 idList:	COMMA ID idList | lambda;
 
 
-fact:	PREDICATE_NAME LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD;
-
-
-factList:	fact factList | lambda;
-
-	
-headPredicate:	PREDICATE_NAME LEFT_PAREN ID idList RIGHT_PAREN;
+headPredicate:	STRING LEFT_PAREN ID idList RIGHT_PAREN;
 
 	
 builtInPredicate:	parameter operator parameter;
 
+
 	
-predicate:	builtInPredicate | PREDICATE_NAME LEFT_PAREN parameter parameterList RIGHT_PAREN;
+predicate:	builtInPredicate | STRING LEFT_PAREN parameter parameterList RIGHT_PAREN;
 
 	
 predicateList:	COMMA predicate predicateList | lambda;
+
+
+
 
 	
 parameter:	STRING | ID;
@@ -48,6 +46,11 @@ query:      Q_MARK COLON_DASH predicate;
 
 queryList:	query queryList | lambda;
 
+fact:	STRING LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD;
+
+
+factList:	fact factList | lambda;
+
 
 stringList:	COMMA STRING stringList | lambda ;
 
@@ -58,7 +61,12 @@ lambda	:	;
  * Token definitions from the lexer project
  * IGNORE: INCLUDED FOR COMPLETENESS FOR ANTLR
  ********************************************************/
-		
+ 
+ 
+ STRING  :   ('a'..'z'|'0'..'9')('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'.')*|'\''('a'..'z'|'0'..'9'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'\''
+	;
+
+
 COMMA	:	','
 	;
 
@@ -99,23 +107,15 @@ LESS	: '<'
 LESSSTRICT	: '<='
 		;
 
-/*SCHEMES		: 'Schemes'
-		;
 FACTS		: 'Facts'
 		;
 RULES		: 'Rules'
 		;
 /*QUERIES		: 'Queries'
 		;*/
-    
-PREDICATE_NAME  :	('a'..'z')('a'..'z'|'A'..'Z'|'_')*
-    ;
+     
 
-ID  :	('A'..'Z') |('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*
-    ;
-
-STRING
-    :   ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+ID  :	('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*
     ;
 
 COMMENT
@@ -130,24 +130,3 @@ WS  :   ( ' '
         ) -> skip
     ;
 
-fragment
-HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
-
-fragment
-ESC_SEQ
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'"'|'\''|'\\')
-    |   UNICODE_ESC
-    |   OCTAL_ESC
-    ;
-
-fragment
-OCTAL_ESC
-    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7')
-    ;
-
-fragment
-UNICODE_ESC
-    :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-    ;

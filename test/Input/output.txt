@@ -1,1 +1,2 @@
-0
+line 10005:11 extraneous input ',' expecting STRING
+1
